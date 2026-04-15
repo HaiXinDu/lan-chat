@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天室</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- 登录界面 -->
+        <div id="loginForm" class="login-form">
+            <h1>📱 聊天室</h1>
+            <div class="login-input-group">
+                <input type="text" id="usernameInput" placeholder="请输入用户名" maxlength="50" autocomplete="off">
+                <button id="joinBtn">进入聊天</button>
+            </div>
+        </div>
+
+        <!-- 聊天界面 -->
+        <div id="chatContainer" class="chat-container hidden">
+            <!-- 头部 -->
+            <div class="header">
+                <div class="header-title">
+                    <span id="currentChannelDisplay">请选择频道</span>
+                    <span id="totalUsers" class="total-users">总人数: 0</span>
+                </div>
+                <div class="header-actions">
+                    <button id="createChannelBtn" class="header-btn">➕ 创建频道</button>
+                    <button id="filesBtn" class="header-btn">📂 文件库</button>
+                    <button id="exportBtn" class="header-btn">📥 导出记录</button>
+                </div>
+            </div>
+
+            <!-- 主内容区域 -->
+            <div class="chat-main">
+                <!-- 侧边栏 -->
+                <div class="sidebar">
+                    <!-- 频道列表 -->
+                    <div class="sidebar-section">
+                        <div class="sidebar-header">
+                            <span>📢 频道列表</span>
+                            <span id="connectionStatus" class="status connected">已连接</span>
+                        </div>
+                        <ul id="channelList" class="channel-list"></ul>
+                    </div>
+                </div>
+
+                <!-- 消息列表 -->
+                <div id="messages" class="messages"></div>
+            </div>
+
+            <!-- 输入区域 -->
+            <div class="input-area">
+                <div id="filePreview" class="file-preview hidden"></div>
+                <div class="input-row">
+                    <button id="attachBtn" class="attach-btn">📎</button>
+                    <textarea id="messageInput" class="message-input" placeholder="输入消息..." rows="1" autocomplete="off"></textarea>
+                    <button id="sendBtn" class="send-btn">发送</button>
+                </div>
+                <!-- 文件上传菜单 -->
+                <div id="attachMenu" class="attach-menu">
+                    <div id="selectFile" class="menu-item">📄 选择文件</div>
+                    <div id="selectFolder" class="menu-item">📁 选择文件夹</div>
+                </div>
+                <!-- 隐藏的文件输入 -->
+                <input type="file" id="fileInput" class="hidden" multiple>
+                <input type="file" id="folderInput" class="hidden" webkitdirectory multiple>
+            </div>
+        </div>
+
+        <!-- 文件库弹窗 -->
+        <div id="filesModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📂 文件库</h2>
+                    <button class="modal-close" onclick="chatApp.closeFilesModal()">✕</button>
+                </div>
+                <div id="filesStats" class="files-stats"></div>
+                <div id="filesList" class="files-list"></div>
+            </div>
+        </div>
+
+        <!-- 创建频道弹窗 -->
+        <div id="createChannelModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>➕ 创建新频道</h2>
+                    <button class="modal-close" onclick="chatApp.closeCreateChannelModal()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="newChannelName" class="modal-input" placeholder="输入频道名称" maxlength="50" autocomplete="off">
+                    <button id="confirmCreateChannel" class="modal-btn">创建</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app.js"></script>
+</body>
+</html>

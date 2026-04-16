@@ -12,7 +12,7 @@ const io = socketIo(server);
 // 配置文件上传
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadDir = path.join(__dirname, '..', 'uploads');
+        const uploadDir = path.join(__dirname, 'uploads');
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
@@ -35,14 +35,14 @@ const upload = multer({
 });
 
 // 静态文件服务
-app.use(express.static(path.join(__dirname, '..', 'public')));
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 聊天历史存储
-const HISTORY_FILE = path.join(__dirname, '..', 'chat-history.json');
+const HISTORY_FILE = path.join(__dirname, 'chat-history.json');
 
 // 频道存储
-const CHANNELS_FILE = path.join(__dirname, '..', 'channels.json');
+const CHANNELS_FILE = path.join(__dirname, 'channels.json');
 
 // 频道数据
 let channels = {};
@@ -107,7 +107,7 @@ function saveChatRecord(message, channel) {
     history.push(message);
     
     const historyFile = channel ? 
-        path.join(__dirname, '..', `chat-history-${channel}.json`) :
+        path.join(__dirname, `chat-history-${channel}.json`) :
         HISTORY_FILE;
     
     fs.writeFileSync(historyFile, JSON.stringify(history, null, 2), 'utf8');
@@ -115,7 +115,7 @@ function saveChatRecord(message, channel) {
 
 function getChatHistory(channel) {
     const historyFile = channel ? 
-        path.join(__dirname, '..', `chat-history-${channel}.json`) :
+        path.join(__dirname, `chat-history-${channel}.json`) :
         HISTORY_FILE;
     
     if (!fs.existsSync(historyFile)) {
@@ -382,7 +382,7 @@ app.post('/upload', upload.array('files', 100), (req, res) => {
 
 // 获取文件列表
 app.get('/api/files', (req, res) => {
-    const uploadDir = path.join(__dirname, '..', 'uploads');
+    const uploadDir = path.join(__dirname, 'uploads');
     
     if (!fs.existsSync(uploadDir)) {
         return res.json({ success: true, files: [] });
@@ -405,7 +405,7 @@ app.get('/api/files', (req, res) => {
 // 删除文件
 app.delete('/api/files/:filename', (req, res) => {
     const filename = req.params.filename;
-    const filepath = path.join(__dirname, '..', 'uploads', filename);
+    const filepath = path.join(__dirname, 'uploads', filename);
     
     if (fs.existsSync(filepath)) {
         fs.unlinkSync(filepath);
